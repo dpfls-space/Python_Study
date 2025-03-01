@@ -1,0 +1,6 @@
+x = 10
+y = 3.14
+name = "AI"
+is_python_easy = True
+
+print(name)
