@@ -1,0 +1,40 @@
+# 3. 간단한 영화 추천 시스템 구현
+
+import pandas as pd
+
+col_genre  = ['범죄, 스릴러, 미스터리', '액션', 'SF, 판타지, 어드벤처', '로맨틱, 코미디']
+row_region  = ['서울','경기','기타']
+data = [
+    [46.4, 42.8, 43.3, 25.7],
+     [11.8, 41.9, 45.8, 27.2],
+      [20.2, 10.0, 0.9, 28.3]]
+
+region_genre_data = pd.DataFrame(data, columns=col_genre, index=row_region)
+#display(region_genre_data)
+
+# 지역 입력 받아서 가장 높은 선호도의 장르 찾기
+def get_top_genre(region):
+    global recommend_genre
+
+    if region not in region_genre_data.index:
+        return f"'{region}' 에 해당하는 데이터가 없습니다"
+
+    top_genre = region_genre_data.loc[region].idxmax() #장르
+    top_value = region_genre_data.loc[region].max() #선호도
+
+    recommend_genre = top_genre
+
+    return f"'{region}' 지역에서 가장 선호되는 장르는 '{top_genre}' (선호도: {top_value}) 입니다."
+
+# 테스트
+region = input("사는 지역을 '서울', '경기', '기타' 중에 입력하세요 : ")
+print(get_top_genre(region))
+
+genre_movie = {"범죄, 스릴러, 미스터리" : ["오리엔트 특급 살인(2017)", "유주얼 서스펙트(1995)", "런(2020)"],
+               "액션" : ["인셉션(2010)", "미션 임파서블 시리즈(1996)", "존 윅 시리즈(2014-2024)"],
+               "SF, 판타지, 어드벤처" : ["내셔널 트레져1, 2(2004 - 2007)", "쥬라기 월드(2015)", "몬테크리스토 백작(2002)"],
+               "로맨틱, 코미디" : ["프로포즈(2009)", "나의 특별한 사랑 이야기(2008)", "내가 사랑했던 모든 남자들에게(2018)"]}
+
+genre_movie_df = pd.DataFrame(genre_movie)
+
+display(genre_movie_df.filter(items=[recommend_genre], axis=1))
