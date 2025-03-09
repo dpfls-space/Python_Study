@@ -38,3 +38,94 @@ genre_movie = {"범죄, 스릴러, 미스터리" : ["오리엔트 특급 살인(
 genre_movie_df = pd.DataFrame(genre_movie)
 
 display(genre_movie_df.filter(items=[recommend_genre], axis=1))
+
+# 더 좋은 방법
+
+"""
+가독성 향상:
+
+get_top_genre() 함수가 None과 메시지를 반환하도록 변경해 불필요한 global 변수를 제거함.
+global recommend_genre를 사용하여 전역 변수를 변경하고 있음 → 전역 변수는 다른 코드에서 변경될 수 있어 유지보수가 어렵고, 코드 흐름이 복잡해짐
+
+함수는 입력을 받아 결과를 반환하는 것이 좋음. 하지만 기존 코드에서는 출력 메시지뿐만 아니라, 전역 변수를 변경하는 부작용도 있음.
+
+전역 변수 제거: 함수가 직접 전역 변수를 변경하지 않음.
+
+2개의 값 반환 (return top_genre, message):
+
+top_genre → 가장 선호하는 장르 (예: "액션")
+
+message → 사용자에게 보여줄 메시지 (예: "'서울' 지역에서 가장 선호되는 장르는 '액션' (선호도: 42.8) 입니다.")
+
+코드 흐름이 단순해지고 유지보수가 쉬워짐
+
+영화 추천 데이터를 dict에서 pd.DataFrame으로 변환하는 과정을 컴프리헨션으로 개선.
+이 방식은 genre_movie 딕셔너리의 리스트 길이가 다르면 DataFrame 생성 시 오류가 발생할 수 있음.
+
+예를 들어, 각 장르마다 추천 영화 개수가 다르다면, 리스트 길이가 다르므로 DataFrame이 제대로 정렬되지 않음.
+
+dict 컴프리헨션(딕셔너리 내포)을 활용하여 각 영화 리스트를 pd.Series로 변환함.
+
+pd.Series(v)를 사용하면, 리스트 길이가 다르더라도 NaN을 자동으로 채워서 DataFrame을 만들 수 있음.
+
+입력 처리 개선:
+
+strip()을 사용하여 입력의 공백을 제거하여 사용자의 실수 방지.
+출력 형식 개선:
+
+1.추천 영화 리스트를 print() 문으로 직접 출력하여 사용자 친화적으로 변경.
+
+2.DataFrame.display() 대신 리스트 출력으로 코드 실행 환경에 상관없이 결과를 볼 수 있도록 변경.
+
+display() 함수는 Jupyter Notebook 같은 환경에서만 동작.
+
+일반적인 Python 실행 환경에서는 결과를 제대로 볼 수 없음.
+"""
+
+# 장르 및 지역별 선호도 데이터 정의
+col_genre = ['범죄, 스릴러, 미스터리', '액션', 'SF, 판타지, 어드벤처', '로맨틱, 코미디']
+row_region = ['서울', '경기', '기타']
+data = [
+    [46.4, 42.8, 43.3, 25.7],
+    [11.8, 41.9, 45.8, 27.2],
+    [20.2, 10.0, 0.9, 28.3]
+]
+
+region_genre_data = pd.DataFrame(data, columns=col_genre, index=row_region)
+
+# 장르별 추천 영화 데이터 정의
+genre_movie = {
+    "범죄, 스릴러, 미스터리": ["오리엔트 특급 살인(2017)", "유주얼 서스펙트(1995)", "런(2020)"],
+    "액션": ["인셉션(2010)", "미션 임파서블 시리즈(1996)", "존 윅 시리즈(2014-2024)"],
+    "SF, 판타지, 어드벤처": ["내셔널 트레져1, 2(2004 - 2007)", "쥬라기 월드(2015)", "몬테크리스토 백작(2002)"],
+    "로맨틱, 코미디": ["프로포즈(2009)", "나의 특별한 사랑 이야기(2008)", "내가 사랑했던 모든 남자들에게(2018)"]
+}
+
+"""
+for k, v in genre_movie.items():
+  k, pd.Series(v)
+"""
+
+genre_movie_df = pd.DataFrame(dict([(k, pd.Series(v)) for k, v in genre_movie.items()]))
+
+
+def get_top_genre(region):
+  if region not in region_genre_data.index:
+    return None, f"'{region}' 에 해당하는 데이터가 없습니다."
+
+  top_genre = region_genre_data.loc[region].idxmax() # 가장 높은 선호도의 장르 찾기
+  top_value = region_genre_data.loc[region].max() # 해당 장르의 선호도
+
+  return top_genre, f"'{region}' 지역에서 가장 선호되는 장르는 '{top_genre}' (선호도: {top_value}) 입니다."
+
+# 사용자 입력
+region = input("사는 지역을 '서울', '경기', '기타' 중에 입력하세요: ").strip()
+
+# 장르 및 추천 영화 출력
+top_genre, message = get_top_genre(region)
+print(message)
+
+if top_genre:
+  print(f"\n'{top_genre}' 장르의 영화 추천 목록:")
+  for movie in genre_movie.get(top_genre, []):
+    print(f"-{movie}")
