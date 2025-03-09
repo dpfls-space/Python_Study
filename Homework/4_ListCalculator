@@ -1,0 +1,22 @@
+# 리스트에 있는 숫자들 중에서 최대값, 최소값, 평균, 중앙값을 구하는 함수
+
+def list_statistics(numbers) :
+  # 최대값
+  max_value = max(numbers)
+
+  # 최소값
+  min_value = min(numbers)
+
+  # 평균
+  average_value = sum(numbers) / len(numbers)
+
+  # 중앙값
+  sorted_number = sorted(numbers)
+  median_value = sorted_number[len(sorted_number) // 2]
+
+  return max_value, min_value, average_value, median_value
+
+
+# 테스트 코드
+numbers = [5, 1, 9, 3, 7, 6]
+print(list_statistics(numbers)) # (최대값, 최소값, 평균, 중앙값) 출력
