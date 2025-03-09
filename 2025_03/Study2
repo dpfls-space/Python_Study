@@ -1,0 +1,25 @@
+# 머신러닝 실습
+# 예제로 scikit-learn 에서 제공하는 붓꽃(Iris) 데이터셋 사용
+
+"""
+데이터 준비
+"""
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+
+X = iris.data # 입력 데이터
+y = iris.target  # 정답 데이터
+
+print(X[:5]) # 처음 5개 데이터 출력
+print()
+print(y[:5]) # 처음 5개 정답 출력
+
+"""
+데이터 분리 - 모델을 학습할 데이터와 테스트할 데이터 나누기
+"""
+
+from sklearn.model_selection import train_test_split
+
+# 데이터를 80% 학습용, 20% 테스트용으로 나누기
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
