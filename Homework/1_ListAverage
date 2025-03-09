@@ -6,3 +6,16 @@ for i in intList:
   sum += i
 
 print(sum / len(intList))
+
+# 더 좋은 방법
+
+# 함수화 : calculate_average() 함수를 정의하여 재사용성을 높임
+# sum() 함수 활용 : 기존의 for문을 없애고 sum() 함수로 코드 간결화
+# 예외 처리 : 리스트가 비어있을 경우 ZeroDivisionError 를 방지하기 위해 if 문 사용
+
+def calculate_average(numbers):
+  return sum(numbers) / len(numbers) if numbers else 0 # 빈 리스트 예외 처리
+
+int_list = [9, 2000, 30, 25, 2, 2025]
+average = calculate_average(int_list)
+print(average)
