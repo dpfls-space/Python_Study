@@ -20,3 +20,40 @@ def list_statistics(numbers) :
 # 테스트 코드
 numbers = [5, 1, 9, 3, 7, 6]
 print(list_statistics(numbers)) # (최대값, 최소값, 평균, 중앙값) 출력
+
+
+# 더 좋은 방법
+
+'''
+중앙값은 홀수일 경우에는 기본 중앙값: 리스트[리스트길이(정렬된숫자) // 2] 이지만,
+        짝수일 경우에는 두 값의 평균을 구해야 해서 if else 로 나눠서 계산 필요
+'''
+
+def list_statistics(numbers):
+  # 최대값
+  max_value = max(numbers)
+
+  # 최소값
+  min_value = min(numbers)
+
+  # 평균
+  average_value = sum(numbers) / len(numbers)
+
+  # 중앙값
+  sorted_numbers = sorted(numbers)
+  n = len(sorted_numbers)
+
+  if n % 2 == 1:
+    # 홀수일 경우 중앙값
+    median_value = sorted_numbers[n // 2]
+  else:
+    # 짝수일 경우 중앙값
+    mid1 = sorted_numbers[(n // 2) -1]
+    mid2 = sorted_numbers[n // 2]
+    median_value = (mid1 + mid2) / 2
+  
+  return max_value, min_value, average_value, median_value
+
+# 테스트 코드
+numbers = [5, 1, 9, 3, 7, 6]
+print(list_statistics(numbers)) #(9, 1, 5.166666666666667, 5.5)
