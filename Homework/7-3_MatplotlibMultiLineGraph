@@ -1,0 +1,48 @@
+# 3. Matplotlib을 사용하여 다중 라인 그래프 그리기 + 데이터 해석하기
+
+'''
+설명
+
+아래와 같은 가상의 데이터가 있다. 2015년부터 2021년까지 세 개의 제품(Product A, Product B, Product C)의 연간 판매량이다.
+각 제품의 판매량을 한 그래프에 다중 라인으로 나타내고,
+가장 판매가 증가한 제품과 감소한 제품을 시각적으로 설명하라.
+'''
+
+'''
+요구사항
+
+1. matplotlib을 사용하여 한 그래프에 세 개의 라인을 그린다.
+2. 각 제품의 추세를 다른 색상과 마커로 표시하고 범례(legend)를 포함한다.
+3. 가장 판매량이 증가한 제품과 감소한 제품을 그래프 해석과 함께 설명한다.
+4. 그래프에 제목, 축 라벨, 그리드, 데이터 포인트 값도 추가한다.
+'''
+
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = 'Malgun Gothic' # 왜 안 되지???
+
+# 데이터
+years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
+
+product_A_sales = [200, 240, 300, 500, 800, 1000, 1200]
+product_B_sales = [300, 350, 400, 420, 430, 400, 390]
+product_C_sales = [150, 160, 180, 200, 250, 300, 350]
+
+# 그래프 그리기
+plt.plot(years, product_A_sales, marker='o', linestyle='-', color='r', label='Product A')
+plt.plot(years, product_B_sales, marker='o', linestyle='-', color='g', label='Product B')
+plt.plot(years, product_C_sales, marker='o', linestyle='-', color='b', label='Product C')
+
+# 데이터포인트 값 표시
+for i in range(len(years)):
+  plt.text(years[i], product_A_sales[i] + 5, f"{product_A_sales[i]}", ha='center', color='black')
+  plt.text(years[i], product_B_sales[i] + 5, f"{product_B_sales[i]}", ha='center', color='black')
+  plt.text(years[i], product_C_sales[i] + 5, f"{product_C_sales[i]}", ha='center', color='black')
+
+plt.title('Product sales graph')
+plt.ylabel('sales')
+plt.xlabel('year')
+plt.grid(True)
+plt.legend()
+
+plt.show()
