@@ -12,5 +12,5 @@ SVC 는 서포트 벡터 머신(SVM)을 이용한 분류(Classification) 모델
 2. 경계와 가장 가까운 데이터 포인트(서포트 벡터)가 분류 기준에 결정적인 역할을 한다.
 3. 선형 분류뿐만 아니라 비선형 분류도 가능하다.
     이때 커널 함수(Kernel) 를 사용한다.
-        ex) tjsgud(linear), 다항식(poly), RBF 등
+        ex) 선형(linear), 다항식(poly), RBF 등
 '''
