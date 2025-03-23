@@ -1,0 +1,44 @@
+# 1. KNN과 Decision Tree 성능 비교 및 하이퍼파라미터 튜닝
+'''
+설명
+
+붓꽃(Iris) 데이터셋을 사용하여 KNN과 Decision Tree 모델을 각각 학습하고 테스트하라.
+두 모델의 성능을 비교하고, 각각 하이퍼파라미터를 조정하여 최적의 성능을 내는 조합을 찾아라.
+'''
+
+'''
+요구사항
+
+1. KNeighborsClassifier와 DecisionTreeClassifier을 모두 사용한다.
+2. 각각 다른 하이퍼파라미터를 적용하여 성능을 비교한다.
+    - KNN: n_neighbors
+    - Decision Tree: max_depth
+3. train_test_split을 사용하고, 정확도를 비교한다.
+4. 최종적으로 두 모델의 성능을 출력하고, 어떤 모델이 더 적합한지 설명하라.
+'''
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+
+iris = load_iris()
+x, y = iris.data, iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+knn_model = KNeighborsClassifier(n_neighbors=36) # 36부터 성능 떡락
+dt_model = DecisionTreeClassifier(max_depth=3) # 최소 3부터
+
+knn_model.fit(X_train, y_train)
+dt_model.fit(X_train, y_train)
+
+y_pred_knn = knn_model.predict(X_test)
+y_pred_dt = dt_model.predict(X_test)
+
+accuracy_knn = accuracy_score(y_test, y_pred_knn)
+accuracy_dt = accuracy_score(y_test, y_pred_dt)
+
+print(f"K-NN 모델 정확도: {accuracy_knn * 100:.2f}%")
+print(f"Decision Tree 모델 정확도: {accuracy_dt * 100:.2f}%")
