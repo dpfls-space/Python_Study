@@ -1,0 +1,47 @@
+# 2. SVM(SVC)을 사용한 다중 클래스 분류 및 커널 비교
+
+'''
+설명
+
+붓꽃(Iris) 데이터셋을 사용하여 SVC 모델을 학습하고 커널에 따른 모델 성능을 비교하라.
+'''
+
+'''
+요구사항
+
+1. kernel='linear', kernel='poly', kernel='rbf' 세 가지를 각각 테스트한다.
+2. 각 커널에 대해 학습을 수행하고, 테스트 데이터에 대한 정확도를 출력한다.
+3. 가장 성능이 좋은 커널은 무엇인지, 왜 그럴지 스스로 해석해본다.
+'''
+
+'''
+힌트
+
+poly 커널은 차수가 높을수록 복잡해진다. (degree 하이퍼파라미터 실험해볼 것)
+C와 gamma도 조금씩 조정해보면 더 좋다.
+'''
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn import svm
+
+iris = load_iris()
+x, y = iris.data, iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+svm_linear = svm.SVC(kernel="linear", C=3, degree=1) # degree 가 몇이던 C=3까지 100%
+svm_poly = svm.SVC(kernel='poly', C=2, degree=3) # C가 degree 를 넘어가면 정확도가 떨어짐
+svm_rbf = svm.SVC(kernel='rbf', C=47, degree=1200) # degree 가 몇이던 C=47까지 100%
+
+svm_linear.fit(X_train, y_train)
+svm_poly.fit(X_train, y_train)
+svm_rbf.fit(X_train, y_train)
+
+y_pred_linear = svm_linear.predict(X_test)
+y_pred_poly = svm_poly.predict(X_test)
+y_pred_rbf = svm_rbf.predict(X_test)
+
+print(f"linear 정확도 : {svm_linear.score(X_test, y_test) * 100:.2f}%")
+print(f"poly 정확도 : {svm_poly.score(X_test, y_test) * 100:.2f}%")
+print(f"rbf 정확도 : {svm_rbf.score(X_test, y_test) * 100:.2f}%")
