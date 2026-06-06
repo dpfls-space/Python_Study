@@ -1,4 +1,3 @@
-"""
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import numpy as np
@@ -21,7 +20,6 @@ model.fit(X_train, y_train)
 #예측
 y_pred = model.predict(X_test)
 print("예측값: ", y_pred)
-"""
 
 # 1-11 의 성능 평가
 from sklearn.metrics import mean_squared_error
